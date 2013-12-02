@@ -1,0 +1,52 @@
+<head>
+  <title>sagitarian-list</title>
+</head>
+
+<body>
+  <div id="header">
+    <h1 class="center green"> Sagitarian BASH </h1>
+  </div>
+  <div id="content">
+    <div id="status" class="center"></div>
+    <h1 class="center yellow"> RSVP </h1>
+    <div id="actions-pane" class="container">
+      {{> listActions}}
+    </div>
+    <div id="list-pane" class="container">
+      {{> list}}
+    </div>
+  </div>
+  <div id="footer"></div>
+</body>
+
+<template name="listActions">
+  <form id="rsvp-form" class="clearfix">
+    {{#each form}}
+      <div class="{{wrapper}}">
+        <div class="input-box">
+          <input class="inp-validate" type="{{type}}" id="{{eid}}" placeholder="{{placeholder}}" required />
+        </div>
+      </div>
+    {{/each}}
+    <div class="w100 center">
+      <input class="center submit-button" disabled type="submit" value="Sign me up!" />
+    </div>
+  </form>
+</template>
+
+<template name="list">
+  {{#each list}}
+  <div class="list-item clearfix">
+    <div class="w50">
+      <div class="list-name">
+        {{fname}} {{lname}}
+      </div>
+    </div>
+    <div class="w50">
+      <div class="list-email">
+        {{email}}
+      </div>
+    </div>
+  </div>
+  {{/each}}
+</template>
