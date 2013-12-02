@@ -4,10 +4,11 @@
 
 <body>
   <div id="header">
+      {{> loginForm}}
     <h1 class="center green"> Sagitarian BASH </h1>
   </div>
   <div id="content">
-    <div id="status" class="center"></div>
+    {{> status }}
     <h1 class="center yellow"> RSVP </h1>
     <div id="actions-pane" class="container">
       {{> listActions}}
@@ -19,6 +20,22 @@
   <div id="footer"></div>
 </body>
 
+<template name="loginForm">
+  <form id="login-form">
+  {{#if loggedIn}}
+    <input type="submit" value="Logout">
+  {{else}}
+      <input class="input-box" type="text" name="username"/>
+      <input class="input-box" type="password" name="password"/>
+      <input class="input-box" type="submit" value="Login"/>
+  {{/if}}
+  </form>
+</template>
+
+<template name="status">
+  <div id="status" class="center"></div>
+</template>
+
 <template name="listActions">
   <form id="rsvp-form" class="clearfix">
     {{#each form}}
@@ -28,6 +45,14 @@
         </div>
       </div>
     {{/each}}
+    {{#if isAdmin}}
+      <div class="w100 center">
+        <div class="input-checkbox">
+          <input class="center" id="inp-free-entrance" type="checkbox">
+          <label for="inp-free-entrance"> Free entrance </label>
+        </div>
+      </div>
+    {{/if}}
     <div class="w100 center">
       <input class="center submit-button" disabled type="submit" value="Sign me up!" />
     </div>
@@ -36,7 +61,7 @@
 
 <template name="list">
   {{#each list}}
-  <div class="list-item clearfix">
+  <div class="list-item clearfix{{#if free}} free{{/if}}">
     <div class="w50">
       <div class="list-name">
         {{fname}} {{lname}}
@@ -50,3 +75,4 @@
   </div>
   {{/each}}
 </template>
+

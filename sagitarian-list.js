@@ -3,12 +3,22 @@ var Invites = new Meteor.Collection('invites');
 if (Meteor.isClient) {
   var inpForm,
       inpSubmit, 
-      status;
+      status,
+      loginForm;
+
   Template.list.list = Invites.find();
+
   Template.listActions.rendered = function () {
     inpForm   = this.find('#rsvp-form');
-    inpSubmit = $("input[type=submit]", inpForm);
+    inpSubmit = this.find("input[type=submit]");
+  };
+
+  Template.status.rendered = function () {
     status    = $("#status");
+  };
+
+  Template.loginForm.rendered = function () {
+    loginForm = $("#login-form");
   };
 
   Template.listActions.form = [
@@ -31,22 +41,48 @@ if (Meteor.isClient) {
       wrapper: 'w100'
     }
   ];
+
   Template.listActions.events({
     'keyup input.inp-validate' : function () {
-      inpSubmit.prop('disabled', !inputsFilled(inpForm));
+      inpSubmit.disabled = !inputsFilled(inpForm);
     },
     'click input[type=submit]' : function (evt) {
       evt.preventDefault();
       if(inputsFilled(inpForm)) {
         if(submitInvitation(inpForm)) {
-          setStatus("See you soon, "+$("#inp-fname", inpForm).val()+"! You may bring 2 friends", 'confirm');
-          inpForm[0].reset();
+          setStatus($("#inp-fname", inpForm).val()+" is now added to the invitation list!", 'confirm');
+          inpForm.reset();
         } else {
           setStatus($("#inp-email", inpForm).val()+" is already on invitation list!", 'warn');
         }
       }
     }
   });
+  Template.listActions.isAdmin = function () {
+    if (Meteor.user())
+      return Meteor.user().username === 'admin';
+  };
+
+  Template.loginForm.events({
+    'submit' : function (evt) {
+      evt.preventDefault();
+      if (Meteor.user()) {
+        Meteor.logout();
+        return false;
+      }
+      Meteor.loginWithPassword(loginForm.find('[name="username"]').val(), loginForm.find('[name="password"]').val(), function (err) {
+        if(err) {
+          setStatus('Incorrect login credentials!', 'error');
+        } else {
+          setStatus('Logged in as '+Meteor.user().username+'.', 'confirm');
+        }
+      });
+    }
+  });
+
+  Template.loginForm.loggedIn = function () {
+    return Meteor.user();
+  };
 
   var isEmail = function (email) {
     var regex = /^([a-zA-Z0-9_.+\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
@@ -68,7 +104,10 @@ if (Meteor.isClient) {
       lname: fields[1].value,
       email: fields[2].value
     };
-    if (Invites.findOne({email: fields[2].value}) === undefined) {
+    if (Meteor.user() && Meteor.user().username === 'admin') {
+      insertion.free = fields[3].checked;
+    }
+    if (!Invites.findOne({email: fields[2].value})) {
       Invites.insert(insertion);
       return true;
     }
@@ -87,5 +126,14 @@ if (Meteor.isClient) {
 
 if (Meteor.isServer) {
   Meteor.startup(function () {
+    if(!Meteor.users.findOne({username: "admin"}))  {
+      var pw = 'randompassword';
+
+      Accounts.createUser({
+        username: 'admin',
+        password: pw
+      });
+      console.log("created admin user with password: "+pw);
+    }
   });
 }
