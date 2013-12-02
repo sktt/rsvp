@@ -29,7 +29,7 @@ body
 
 .container
   clearfix()
-  for w in 10 20 25 33 50 66 75 100
+  for w in 10 20 25 33 40 50 60 66 75 100
     .w{w}
       width w*1%
       float left
@@ -48,6 +48,11 @@ body
 
 .green
   color cgreen
+
+.truncate
+  overflow hidden
+  text-overflow ellipsis
+  white-space nowrap
 
 h1
   font-size 40px

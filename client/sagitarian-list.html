@@ -61,16 +61,21 @@
 
 <template name="list">
   {{#each list}}
-  <div class="list-item clearfix{{#if free}} free{{/if}}">
-    <div class="w50">
+  <div class="list-item clearfix">
+    <div class="w40">
       <div class="list-name">
         {{fname}} {{lname}}
       </div>
     </div>
-    <div class="w50">
-      <div class="list-email">
+    <div class="w40">
+      <div class="list-email truncate">
         {{email}}
       </div>
+    </div>
+    <div class="w20">
+      {{#if free}}
+        <i class="icon-star" title="Free entrance"/>
+      {{/if}}
     </div>
   </div>
   {{/each}}
