@@ -8,7 +8,10 @@ Template.list.list = function () {
 };
 Template.list.events({
   'click .list-item' : function (evt,tmpl) {
-    console.log(evt.target);
+    evt.preventDefault();
+    if (evt.target.className.split(' ').indexOf('btn') != -1) {
+      return;
+    }
     if(Meteor.user()) { // only if logged in
       Invites.update(this._id,{$inc: {arrived: 1}});
     }
