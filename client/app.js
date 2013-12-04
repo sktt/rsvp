@@ -4,8 +4,16 @@ var inpForm,
     loginForm;
 
 Template.list.list = function () {
-  return Invites.find();
+  return Invites.find({}, {sort: {lname: 1}});
 };
+Template.list.events({
+  'click .list-item' : function (evt,tmpl) {
+    console.log(evt.target);
+    if(Meteor.user()) { // only if logged in
+      Invites.update(this._id,{$inc: {arrived: 1}});
+    }
+  }
+});
 Template.listActions.rendered = function () {
   inpForm   = this.find('#rsvp-form');
   inpSubmit = this.find("input[type=submit]");
@@ -56,10 +64,6 @@ Template.listActions.events({
     }
   }
 });
-Template.listActions.isAdmin = function () {
-  if (Meteor.user())
-    return Meteor.user().username === 'admin';
-};
 
 Template.loginForm.events({
   'submit' : function (evt) {
@@ -78,9 +82,6 @@ Template.loginForm.events({
   }
 });
 
-Template.loginForm.loggedIn = function () {
-  return Meteor.user();
-};
 
 var isEmail = function (email) {
   var regex = /^([a-zA-Z0-9_.+\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
@@ -95,12 +96,15 @@ var setStatus = function (message, type) {
     status.removeClass('status-visible');
   }, 5000);
 };
+
 var submitInvitation = function (form) {
   var fields = $(":input", form);
   var insertion = {
-    fname: fields[0].value,
-    lname: fields[1].value,
-    email: fields[2].value
+    fname:   fields[0].value,
+    lname:   fields[1].value,
+    email:   fields[2].value,
+    free:    false,
+    arrived: 0 // odd=true, even=true
   };
   if (Meteor.user() && Meteor.user().username === 'admin') {
     insertion.free = fields[3].checked;

@@ -4,11 +4,10 @@
 
 <body>
   <div id="header">
-      {{> loginForm}}
+    {{> loginForm}}
     <h1 class="center green"> Sagitarian BASH </h1>
   </div>
   <div id="content">
-    {{> status }}
     <h1 class="center yellow"> RSVP </h1>
     <div id="actions-pane" class="container">
       {{> listActions}}
@@ -18,6 +17,7 @@
     </div>
   </div>
   <div id="footer"></div>
+  {{> status }}
 </body>
 
 <template name="loginForm">
@@ -61,7 +61,7 @@
 
 <template name="list">
   {{#each list}}
-  <div class="list-item clearfix">
+  <div class="list-item {{arrived}} clearfix">
     <div class="w40">
       <div class="list-name">
         {{fname}} {{lname}}
@@ -69,12 +69,15 @@
     </div>
     <div class="w40">
       <div class="list-email truncate">
-        {{email}}
+        <span title="{{email}}">{{email}}</span>
       </div>
     </div>
     <div class="w20">
       {{#if free}}
         <i class="icon-star" title="Free entrance"/>
+      {{/if}}
+      {{#if isAdmin}}
+        <a href="#" class="btn icon-trash" title="remove"></a>
       {{/if}}
     </div>
   </div>
