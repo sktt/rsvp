@@ -11,7 +11,7 @@ Template.loginForm.events({
       Meteor.logout();
       return;
     }
-    Meteor.loginWithPassword(loginForm.find('[name="username"]').val(), loginForm.find('[name="password"]').val(), function (err) {
+    Meteor.loginWithPassword($loginForm.find('[name="username"]').val(), $loginForm.find('[name="password"]').val(), function (err) {
       if(err) {
         setStatus('Incorrect login credentials!', 'error');
       } else {
