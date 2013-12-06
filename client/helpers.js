@@ -11,6 +11,10 @@ Handlebars.registerHelper('loggedIn', function () {
   return Meteor.user();
 });
 
+Handlebars.registerHelper('username', function () {
+  return Meteor.user().username;
+});
+
 Handlebars.registerHelper('arrived', function () {
   return Invites.findOne({_id: this._id, arrived: {$mod: [2,1]}}) ? 'arrived' : '';
 });

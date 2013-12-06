@@ -1,0 +1,27 @@
+<head>
+  <title>sagitarian-list</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+  {{#if loggedIn }} 
+    {{> userInfo }}
+  {{/if}}
+  <div id="header">
+    <h1 class="center green"> Sagitarian BASH </h1>
+  </div>
+  <div id="content">
+    {{ renderRouter }}
+  </div>
+  {{> status }}
+</body>
+
+<template name="status">
+  <div id="status" class="center"></div>
+</template>
+
+<template name="layout">
+  {{yield}}
+</template>
+
+

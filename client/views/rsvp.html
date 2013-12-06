@@ -1,0 +1,33 @@
+<template name="rsvp">
+  <div class="box">
+    <a class="abs-upper-right" href="{{pathFor 'list'}}">list</a>
+    <h2 class="center yellow"> RSVP </h2>
+    <div id="actions-pane" class="container">
+      {{> listActions}}
+    </div>
+  </div>
+</template>
+
+<template name="listActions">
+  <form id="rsvp-form" class="clearfix">
+    {{#each form}}
+      <div class="{{wrapper}}">
+        <div class="input-box">
+          <input class="inp-validate" type="{{type}}" id="{{eid}}" placeholder="{{placeholder}}" required />
+        </div>
+      </div>
+    {{/each}}
+    {{#if isAdmin}}
+      <div class="w100 center">
+        <div class="input-checkbox">
+          <input class="center" id="inp-free-entrance" type="checkbox">
+          <label for="inp-free-entrance"> Free entrance </label>
+        </div>
+      </div>
+    {{/if}}
+    <div class="w100 center">
+      <input class="center submit-button" disabled type="submit" value="Sign me up!" />
+    </div>
+  </form>
+</template>
+

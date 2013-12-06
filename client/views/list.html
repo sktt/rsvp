@@ -1,0 +1,40 @@
+<template name="list">
+<div class="box">
+  <a class="abs-upper-right" href="{{pathFor 'home'}}">rspv</a>
+  <h2 class="yellow center">Guest check in</h2>
+  <div class="container">
+    {{> searchField }}
+  </div>
+</div>
+  <ul id="list-pane" class="list container">
+    {{#each list}}
+    <li class="list-item {{arrived}} clearfix">
+      <div class="w40">
+        <div class="list-name">
+          {{fname}} {{lname}}
+        </div>
+      </div>
+      <div class="w40">
+        <div class="list-email truncate">
+          <span title="{{email}}">{{email}}</span>
+        </div>
+      </div>
+      <div class="w20">
+        {{#if free}}
+          <i class="icon-star" title="Free entrance"/>
+        {{/if}}
+        {{#if isAdmin}}
+          <a href="#" class="btn icon-trash" title="remove"></a>
+        {{/if}}
+      </div>
+    </li>
+    {{/each}}
+  </ul>
+</template>
+<template name="searchField">
+  <div class="w100">
+    <div id="filter-search" class="input-box center-block searchfield">
+      <input type="text" placeholder="Search..">
+    </div>
+  </div>
+</template>
