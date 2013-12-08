@@ -22,6 +22,9 @@
     </div>
     <div class="w100">
       <input class="submit-button2" type="submit" value="Login"/>
+      {{#if loggingIn }} 
+        <i class="icon-spin5 animate-spin" />
+      {{/if}}
     </div>
   {{/if}}
   </form>

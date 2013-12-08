@@ -20,3 +20,7 @@ Template.loginForm.events({
     });
   }
 });
+
+Template.loginForm.loggingIn = function () {
+  return Meteor.loggingIn(); 
+};

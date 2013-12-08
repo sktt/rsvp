@@ -15,9 +15,10 @@ Template.list.events({
     if (evt.target.className.split(' ').indexOf('btn') != -1) {
       return;
     }
-    if(Meteor.user()) { // only if logged in
-      Invites.update(this._id,{$inc: {arrived: 1}});
-    }
+    Meteor.call('arrived', this._id);
+  },
+  'click a.btn.icon-trash' : function (evt) {
+    Invites.remove(this._id);
   },
   'keyup #filter-search' : function (evt) {
     var keyword = evt.target.value || "";
